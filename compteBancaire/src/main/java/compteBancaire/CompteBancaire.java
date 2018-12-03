@@ -1,52 +1,55 @@
 package compteBancaire;
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
+import javax.ejb.Singleton;
 
 
-@Stateful
-
-@EJB
+@Singleton
 public class CompteBancaire implements CompteBancaireRemote, CompteBancaireLocal {
 
-	private String nomPrenom;
-	private int solde = 0;
+	@EJB
 	Comptes comptes;
+	
 
 	public String versement(String nomPrenom, int montant) {
 
-		solde += montant;
+		int montantFinal = 0;
+		if(comptes.getMyCompte().get(nomPrenom) == null ) {
+			 montantFinal = montant ;
+		}else {
+		    montantFinal = comptes.getMyCompte().get(nomPrenom) + montant;
+		}
+		comptes.getMyCompte().put(nomPrenom, montantFinal);
+		comptes.setMyCompte(comptes.getMyCompte()); 
 
-		return "votre nouveau solde : " + solde;
+		return "votre nouveau solde : " + comptes.getMyCompte().get(nomPrenom);
 	}
 
 	public String retrait(String nomPrenom, int montant) {
 
-		if (solde > montant) {
-			solde -= montant;
+		int montantFinal = 0;
+		if(comptes.getMyCompte().get(nomPrenom) == null ) {
+			 montantFinal = montant ;
+		}else {
+		    montantFinal = comptes.getMyCompte().get(nomPrenom) + montant;
 		}
-		
-		return "votre nouveau solde : " + solde;
+		comptes.getMyCompte().put(nomPrenom, montantFinal);
+		comptes.setMyCompte(comptes.getMyCompte()); 
+
+		return "votre nouveau solde : " + comptes.getMyCompte().get(nomPrenom);
 	}
 
-	public String getNomPrenom() {
-		return nomPrenom;
+
+	public String versementPermanent(String nomPrenom, int montant ) {
+
+		int retour = comptes.versement(nomPrenom, montant);
+
+		return "votre nouveau solde : " + retour;
 	}
 
-	public void setNomPrenom(String nomPrenom) {
-		this.nomPrenom = nomPrenom;
-	}
+	public String retraitPermanent(String nomPrenom, int montant) {
 
-	public int getSolde() {
-		return solde;
-	}
+		int retour = comptes.retrait(nomPrenom, montant);
 
-	public void setSolde(int solde) {
-		this.solde = solde;
+		return "votre nouveau solde : " + retour;
 	}
-
-	@Override
-	public String toString() {
-		return "CompteBancaire : nomPrenom=" + nomPrenom + " , nouveau solde= " + solde;
-	}
-
 }

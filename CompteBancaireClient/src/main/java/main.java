@@ -4,7 +4,10 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import compteBancaire.CompteBancaire;
 import compteBancaire.CompteBancaireRemote;
+import compteBancaire.Comptes;
 
 public class main {
 
@@ -17,11 +20,21 @@ public class main {
 		Context context = new InitialContext(props);
 		
 		CompteBancaireRemote proxy = (CompteBancaireRemote) context.lookup(jndiName);
-		System.out.println(proxy.versement("Henda Ouni", 50));
+		/*System.out.println(proxy.versement("Henda Ouni", 50));
 		System.out.println(proxy.retrait("Henda Ouni", 10));
 		System.out.println(proxy.versement("Henda Ouni", 30));
-		System.out.println(proxy.retrait("Henda Ouni", 20));
+		System.out.println(proxy.retrait("Henda Ouni", 20));	*/
 		
-	}
+		//Comptes c1 = new Comptes(); 
+		
+		//CompteBancaire compte = new CompteBancaire(); 
+		
+		
+		//System.out.println(proxy.retrait("Henda Ouni", 200));
+		System.out.println(proxy.versement("Henda Ouni", 250));
+		System.out.println(proxy.retrait("henda", 10));
+		
+		
 
+	}
 }
